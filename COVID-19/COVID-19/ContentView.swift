@@ -22,47 +22,48 @@ struct Covid19View: View {
     var body: some View {
         VStack{
             if self.data.countries.count != 0 && self.data.data != nil {
-                VStack{
-                    
-                    VStack {
-                        HStack(alignment: .center, spacing: 1.0) {
-                            // ScrollView {
-                            VStack(alignment: .leading, spacing: 18) {
+                ScrollView{
+                    VStack{
+                        
+                        VStack {
+                            HStack(alignment: .center, spacing: 1.0) {
+                                // ScrollView {
+                                VStack(alignment: .leading, spacing: 18) {
+                                    Spacer()
+                                    Text(getDate(time: self.data.data.updated))
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(Color.white)
+                                        .opacity(0.5)
+                                    Text("Covid-19 Cases")
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(Color.white)
+                                        .opacity(0.5)
+                                    Text(getValue(data: self.data.data.cases))
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(Color.white)
+                                        .opacity(0.5)
+                                }
+                                .frame(height: 225)
                                 Spacer()
-                                Text(getDate(time: self.data.data.updated))
-                                    .font(.largeTitle)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color.white)
-                                    .opacity(0.5)
-                                Text("Covid-19 Cases")
-                                    .font(.largeTitle)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color.white)
-                                    .opacity(0.5)
-                                Text(getValue(data: self.data.data.cases))
-                                    .font(.largeTitle)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color.white)
-                                    .opacity(0.5)
+                                Button(action: {
+                                    self.data.data = nil
+                                    self.data.updateData()
+                                }) {
+                                    Image(systemName: "arrow.clockwise")
+                                        .foregroundColor(.blue)
+                                        .padding()
+                                        .font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
+                                }.padding(.bottom)
                             }
-                            .frame(height: 225)
-                            Spacer()
-                            Button(action: {
-                                self.data.data = nil
-                                self.data.updateData()
-                            }) {
-                                Image(systemName: "arrow.clockwise")
-                                    .foregroundColor(.blue)
-                                    .padding()
-                                    .font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
-                            }.padding(.bottom)
+                            .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+                            .background(Color(.red))
+                            .edgesIgnoringSafeArea(.leading)
+                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-600)
                         }
-                        .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
-                        .background(Color(.red))
-                        .edgesIgnoringSafeArea(.leading)
-                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-600)
-                    }
-                   // ScrollView{
+                        // ScrollView{
                         VStack(spacing: 50){
                             HStack(spacing: 100){
                                 ZStack{
@@ -103,8 +104,54 @@ struct Covid19View: View {
                                         
                                     }
                                 }
+                            }
+                            
+                            HStack(spacing: 100.0){
+                                ZStack{
+                                    Color(.red)
+                                        .frame(width: 150, height: 150)
+                                        .cornerRadius(25)
+                                        .opacity(0.5)
+                                    VStack{
+                                        
+                                        Text("Today Cases")
+                                            .font(.largeTitle)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color.white)
+                                        //.opacity(0.5)
+                                        Text(getValue(data: self.data.data.todayCases))
+                                            .font(.largeTitle)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color.white)
+                                        //.opacity(0.5)
+                                        
+                                    }
+                                }
                                 
-                                HStack(spacing: 100.0){
+                                ZStack{
+                                    Color(.red)
+                                        .frame(width: 150, height: 150)
+                                        .cornerRadius(25)
+                                        .opacity(0.5)
+                                    VStack{
+                                        
+                                        Text("Critical")
+                                            .font(.largeTitle)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color.white)
+                                        //.opacity(0.5)
+                                        Text(getValue(data: self.data.data.critical))
+                                            .font(.largeTitle)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color.white)
+                                        //.opacity(0.5)
+                                        
+                                    }
+                                    
+                                }
+                                
+                                
+                                HStack(spacing: 100){
                                     ZStack{
                                         Color(.red)
                                             .frame(width: 150, height: 150)
@@ -112,12 +159,12 @@ struct Covid19View: View {
                                             .opacity(0.5)
                                         VStack{
                                             
-                                            Text("Today Cases")
+                                            Text("Recovered")
                                                 .font(.largeTitle)
                                                 .fontWeight(.bold)
                                                 .foregroundColor(Color.white)
                                             //.opacity(0.5)
-                                            Text(getValue(data: self.data.data.todayCases))
+                                            Text(getValue(data: self.data.data.recovered))
                                                 .font(.largeTitle)
                                                 .fontWeight(.bold)
                                                 .foregroundColor(Color.white)
@@ -133,12 +180,13 @@ struct Covid19View: View {
                                             .opacity(0.5)
                                         VStack{
                                             
-                                            Text("Critical")
-                                                .font(.largeTitle)
+                                            Text("Active")
+                                                .font(.body)
                                                 .fontWeight(.bold)
                                                 .foregroundColor(Color.white)
+                                                .multilineTextAlignment(.leading)
                                             //.opacity(0.5)
-                                            Text(getValue(data: self.data.data.critical))
+                                            Text(getValue(data: self.data.data.active))
                                                 .font(.largeTitle)
                                                 .fontWeight(.bold)
                                                 .foregroundColor(Color.white)
@@ -146,53 +194,7 @@ struct Covid19View: View {
                                             
                                         }
                                         
-                                    }
-                                    
-                                    
-                                    HStack(spacing: 100){
-                                        ZStack{
-                                            Color(.red)
-                                                .frame(width: 150, height: 150)
-                                                .cornerRadius(25)
-                                                .opacity(0.5)
-                                            VStack{
-                                                
-                                                Text("Recovered")
-                                                    .font(.largeTitle)
-                                                    .fontWeight(.bold)
-                                                    .foregroundColor(Color.white)
-                                                //.opacity(0.5)
-                                                Text(getValue(data: self.data.data.recovered))
-                                                    .font(.largeTitle)
-                                                    .fontWeight(.bold)
-                                                    .foregroundColor(Color.white)
-                                                //.opacity(0.5)
-                                                
-                                            }
-                                        }
                                         
-                                        ZStack{
-                                            Color(.red)
-                                                .frame(width: 150, height: 150)
-                                                .cornerRadius(25)
-                                                .opacity(0.5)
-                                            VStack{
-                                                
-                                                Text("Active")
-                                                    .font(.body)
-                                                    .fontWeight(.bold)
-                                                    .foregroundColor(Color.white)
-                                                    .multilineTextAlignment(.leading)
-                                                //.opacity(0.5)
-                                                Text(getValue(data: self.data.data.active))
-                                                    .font(.largeTitle)
-                                                    .fontWeight(.bold)
-                                                    .foregroundColor(Color.white)
-                                                //.opacity(0.5)
-                                                
-                                            }
-                                            
-                                        }
                                     }
                                 }
                                     
@@ -202,10 +204,20 @@ struct Covid19View: View {
                             
                             
                         }
+                        ScrollView(.horizontal, showsIndicators: false){
+                            HStack(alignment: .bottom, spacing: 8){
+                                
+                                ForEach(numbers){i in
+                                    
+                                    
+                                    countryView(number: i.number,country: i.country)
+                                }
+                            }.frame(height: 250)
+                        }
                         
-                   // }
-                    
+                    }
                 }
+                
             }
             else {
                 GeometryReader{_ in
@@ -241,6 +253,29 @@ struct Covid19View: View {
     }
 }
 
+struct countryView: View{
+    var number : CGFloat = 0
+    var country = ""
+    
+    var body : some View{
+        
+        VStack{
+            
+            Text(String(format: "%.0f", Double(number)) + "%").foregroundColor(Color.black.opacity(0.5))
+            
+            Rectangle().fill(Color.red).frame(width: UIScreen.main.bounds.width / 7 - 12, height: getHeight())
+            
+            Text(country).foregroundColor(Color.black.opacity(0.5))
+        }
+        
+    }
+    
+    func getHeight()->CGFloat{
+        
+        return 20 / 10000000 * number
+    }
+}
+
 struct Indicator: UIViewRepresentable {
     func makeUIView(context: UIViewRepresentableContext<Indicator>) -> UIActivityIndicatorView {
         let view = UIActivityIndicatorView(style: .large)
@@ -268,11 +303,6 @@ struct Cases: Decodable {
     var recovered: Double
     var active: Double
     var critical: Double
-    //    var casesPerOneMillion: Double
-    //    var deathsPerOneMillion: Double
-    //    var testsPerOneMillion: Double
-    //    var affectedCountries: Double
-    
 }
 struct Details: Decodable, Hashable {
     var country: String
@@ -291,6 +321,7 @@ class getData: ObservableObject{
     
     @Published var data: Cases!
     @Published var countries = [Details]()
+    
     
     init(){
         updateData()
@@ -327,6 +358,18 @@ class getData: ObservableObject{
                 }
                 
             }.resume()
+            //        ForEach(country, id: \.country){i in
+            //        session1.dataTask(with: URL(string: url1+i)!) {(data, _, err) in
+            //            if err != nil{
+            //                print((err?.localizedDescription)!)
+            //                return
+            //            }
+            //            let json = try! JSONDecoder().decode(Details.self, from: data!)
+            //            DispatchQueue.main.async {
+            //                self.countries.append(json)
+            //            }
+            //
+            //        }.resume()
         }
         
         
@@ -335,3 +378,20 @@ class getData: ObservableObject{
 
 
 var country = ["usa", "italy", "nepal", "china"]
+
+struct type: Identifiable{
+    var id: Int
+    var number: CGFloat
+    var country: String
+}
+var numbers = [
+    type(id: 0, number: 1056560, country: "usa"),
+    type(id: 1, number: 454546, country: "italy"),
+    type(id: 2, number: 2346456, country: "china"),
+    type(id: 3, number: 1645647, country: "spain"),
+    type(id: 4, number: 64564569, country: "UK"),
+    type(id: 5, number: 74645648, country: "Belgium"),
+    type(id: 6, number: 546566, country: "Nepal"),
+    type(id: 7, number: 2466468, country: "HongKong"),
+    type(id: 8, number: 9456469, country: "Russia")
+]
